@@ -9,14 +9,7 @@ Thread.new do
     connection.wait_for_notify do |channel, _pid, payload|
       payload_data = JSON.parse(payload)
       invoice_batch_id = payload_data['invoice_batch_id']
-
-      invoice_batch = InvoiceBatch.find_by(id: invoice_batch_id)
-      next unless invoice_batch
-
-      invoice_line_item = InvoiceLineItem.find_by(invoice_batch_id: invoice_batch_id)
-      next unless invoice_line_item
-
-      InvoiceBatchUpdateJob.perform_later(invoice_line_item)
+      InvoiceBatchUpdateJob.perform_now(invoice_batch_id)
     end
   end
 end

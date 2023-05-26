@@ -5,6 +5,6 @@ class InvoiceLineItem < ApplicationRecord
   private
 
   def enqueue_invoice_batch_update
-    InvoiceBatchUpdateJob.perform_later(self)
+    InvoiceBatchUpdateJob.perform_now(self.invoice_batch_id)
   end
 end
